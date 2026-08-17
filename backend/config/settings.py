@@ -14,8 +14,6 @@ from pathlib import Path
 from datetime import timedelta
 import os
 
-import dj_database_url
-
 
 # =========================================================
 # BASE DIRECTORY
@@ -28,33 +26,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 # =========================================================
 
-# Production SECRET_KEY comes from Render environment variable.
-# Local development uses this fallback.
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
-    "django-insecure-local-development-key-change-me"
+    "django-insecure-development-key-change-this"
 )
 
-# DEBUG is True locally and False on Render.
-DEBUG = os.environ.get("RENDER") != "true"
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-
-# =========================================================
-# ALLOWED HOSTS
-# =========================================================
-
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-]
-
-# Render automatically provides this variable.
-RENDER_EXTERNAL_HOSTNAME = os.environ.get(
-    "RENDER_EXTERNAL_HOSTNAME"
-)
-
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS = os.environ.get(
+    "ALLOWED_HOSTS",
+    "localhost,127.0.0.1"
+).split(",")
 
 
 # =========================================================
@@ -69,9 +51,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    # Third-party
     "rest_framework",
     "corsheaders",
 
+    # Your app
     "MovieBox",
 ]
 
@@ -85,14 +69,16 @@ MIDDLEWARE = [
 
     "django.middleware.security.SecurityMiddleware",
 
-    # WhiteNoise serves Django static files in production.
-    "whitenoise.middleware.WhiteNoiseMiddleware",
-
     "django.contrib.sessions.middleware.SessionMiddleware",
+
     "django.middleware.common.CommonMiddleware",
+
     "django.middleware.csrf.CsrfViewMiddleware",
+
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+
     "django.contrib.messages.middleware.MessageMiddleware",
+
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -119,7 +105,9 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+
                 "django.contrib.auth.context_processors.auth",
+
                 "django.contrib.messages.context_processors.messages",
             ],
         },
@@ -137,33 +125,21 @@ WSGI_APPLICATION = "config.wsgi.application"
 # =========================================================
 # DATABASE
 # =========================================================
-
-# Render will provide DATABASE_URL.
 #
-# If DATABASE_URL exists:
-#     Use PostgreSQL.
+# LOCAL DEVELOPMENT:
+# Uses SQLite.
 #
-# If DATABASE_URL doesn't exist:
-#     Use your local SQLite database.
+# RENDER:
+# We will configure PostgreSQL later.
+#
+# =========================================================
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
-if DATABASE_URL:
-    DATABASES = {
-        "default": dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
-
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+}
 
 
 # =========================================================
@@ -214,13 +190,10 @@ STATIC_URL = "/static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = (
-    "whitenoise.storage.CompressedManifestStaticFilesStorage"
-)
-
 
 # =========================================================
 # MEDIA FILES
+# Movie posters
 # =========================================================
 
 MEDIA_URL = "/media/"
@@ -232,13 +205,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 # CORS
 # =========================================================
 
-# Local React frontend
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
-
-# Later, when your React frontend is deployed,
-# we will add its Render URL here.
 
 
 # =========================================================
@@ -264,6 +233,8 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
 
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 
