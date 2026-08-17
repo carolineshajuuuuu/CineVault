@@ -12,187 +12,263 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+
+import dj_database_url
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# =========================================================
+# BASE DIRECTORY
+# =========================================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# =========================================
+# =========================================================
 # SECURITY
-# =========================================
+# =========================================================
 
-SECRET_KEY = 'django-insecure-!ow4*)#i9f=lin0u494)yw)sy*usyv-0eq3*jr@j=%_-x1rplv'
+# Production SECRET_KEY comes from Render environment variable.
+# Local development uses this fallback.
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-local-development-key-change-me"
+)
 
-DEBUG = True
+# DEBUG is True locally and False on Render.
+DEBUG = os.environ.get("RENDER") != "true"
 
-ALLOWED_HOSTS = []
+
+# =========================================================
+# ALLOWED HOSTS
+# =========================================================
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+]
+
+# Render automatically provides this variable.
+RENDER_EXTERNAL_HOSTNAME = os.environ.get(
+    "RENDER_EXTERNAL_HOSTNAME"
+)
+
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
-# =========================================
+# =========================================================
 # APPLICATIONS
-# =========================================
+# =========================================================
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 
-    'rest_framework',
-    'corsheaders',
+    "rest_framework",
+    "corsheaders",
 
-    'MovieBox',
+    "MovieBox",
 ]
 
 
-# =========================================
+# =========================================================
 # MIDDLEWARE
-# =========================================
+# =========================================================
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
 
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+
+    # WhiteNoise serves Django static files in production.
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 
-# =========================================
-# URLS
-# =========================================
+# =========================================================
+# URL CONFIGURATION
+# =========================================================
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = "config.urls"
 
 
-# =========================================
+# =========================================================
 # TEMPLATES
-# =========================================
+# =========================================================
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
 
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "DIRS": [],
+
+        "APP_DIRS": True,
+
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
 
-WSGI_APPLICATION = 'config.wsgi.application'
+# =========================================================
+# WSGI
+# =========================================================
+
+WSGI_APPLICATION = "config.wsgi.application"
 
 
-# =========================================
+# =========================================================
 # DATABASE
-# =========================================
+# =========================================================
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Render will provide DATABASE_URL.
+#
+# If DATABASE_URL exists:
+#     Use PostgreSQL.
+#
+# If DATABASE_URL doesn't exist:
+#     Use your local SQLite database.
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
-# =========================================
+# =========================================================
 # PASSWORD VALIDATION
-# =========================================
+# =========================================================
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME':
-        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
 
     {
-        'NAME':
-        'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
 
     {
-        'NAME':
-        'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
 
     {
-        'NAME':
-        'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME":
+        "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 
-# =========================================
+# =========================================================
 # INTERNATIONALIZATION
-# =========================================
+# =========================================================
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
 USE_TZ = True
 
 
-# =========================================
+# =========================================================
 # STATIC FILES
-# =========================================
+# =========================================================
 
-STATIC_URL = 'static/'
+STATIC_URL = "/static/"
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = (
+    "whitenoise.storage.CompressedManifestStaticFilesStorage"
+)
 
 
-# =========================================
+# =========================================================
 # MEDIA FILES
-# =========================================
+# =========================================================
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = BASE_DIR / "media"
 
 
-# =========================================
+# =========================================================
 # CORS
-# =========================================
+# =========================================================
 
+# Local React frontend
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
 
+# Later, when your React frontend is deployed,
+# we will add its Render URL here.
 
-# =========================================
+
+# =========================================================
 # DJANGO REST FRAMEWORK
-# =========================================
+# =========================================================
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
     ),
 }
 
 
-# =========================================
+# =========================================================
 # SIMPLE JWT
-# =========================================
+# =========================================================
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
 
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+
+# =========================================================
+# DEFAULT PRIMARY KEY
+# =========================================================
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
