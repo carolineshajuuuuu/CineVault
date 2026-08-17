@@ -1,0 +1,27 @@
+/* index.css */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  background: #08090b;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}

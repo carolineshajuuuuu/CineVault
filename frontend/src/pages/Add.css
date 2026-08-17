@@ -1,0 +1,511 @@
+/* =========================================
+   CINEVAULT - ADD MOVIE
+========================================= */
+
+.add-movie-page {
+  min-height: 100vh;
+  width: 100%;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(216, 169, 75, 0.08),
+      transparent 35%
+    ),
+    #080a0d;
+
+  color: #f5f1e8;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 60px 20px;
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   CONTAINER
+========================================= */
+
+.add-movie-container {
+  width: 100%;
+  max-width: 620px;
+
+  padding: 10px;
+}
+
+
+/* =========================================
+   BACK
+========================================= */
+
+.back-button {
+  border: none;
+  background: transparent;
+
+  color: #999;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  padding: 0;
+  margin-bottom: 45px;
+
+  transition: 0.25s ease;
+}
+
+.back-button:hover {
+  color: #d8a94b;
+}
+
+
+/* =========================================
+   BRAND
+========================================= */
+
+.add-movie-brand {
+  margin: 0 0 15px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 6px;
+
+  color: #d8a94b;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.add-movie-container h1 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(42px, 6vw, 64px);
+
+  font-weight: 500;
+
+  line-height: 1;
+}
+
+
+.add-movie-subtitle {
+  margin: 18px 0 45px;
+
+  color: #888;
+
+  font-size: 15px;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+form {
+  width: 100%;
+}
+
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #aaa;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.form-group input,
+.form-group select {
+  width: 100%;
+
+  height: 52px;
+
+  padding: 0 16px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 4px;
+
+  outline: none;
+
+  background: #111318;
+
+  color: #f5f1e8;
+
+  font-size: 15px;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.form-group input::placeholder {
+  color: #555;
+}
+
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #d8a94b;
+
+  box-shadow:
+    0 0 0 2px rgba(216, 169, 75, 0.08);
+}
+
+
+.form-group select {
+  cursor: pointer;
+}
+
+
+/* =========================================
+   RATING
+========================================= */
+
+.add-rating {
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+}
+
+
+.add-rating button {
+  border: none;
+
+  background: transparent;
+
+  color: #4c4c4c;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  padding: 3px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+
+.add-rating button:hover {
+  color: #d8a94b;
+
+  transform: translateY(-2px);
+}
+
+
+.add-rating button.selected {
+  color: #d8a94b;
+}
+
+
+.add-rating span {
+  margin-left: 12px;
+
+  color: #777;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.add-movie-error {
+  margin-bottom: 20px;
+
+  padding: 13px 15px;
+
+  border-left: 3px solid #d8a94b;
+
+  background: rgba(216, 169, 75, 0.07);
+
+  color: #ddd;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.add-movie-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-top: 40px;
+}
+
+
+.cancel-button,
+.save-movie-button {
+  height: 48px;
+
+  padding: 0 25px;
+
+  border-radius: 4px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+
+.cancel-button {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  background: transparent;
+
+  color: #aaa;
+}
+
+
+.cancel-button:hover {
+  color: #fff;
+
+  border-color: rgba(216, 169, 75, 0.5);
+}
+
+
+.save-movie-button {
+  border: none;
+
+  background: #d8a94b;
+
+  color: #111;
+
+  min-width: 130px;
+}
+
+
+.save-movie-button:hover {
+  background: #f0c86c;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 25px rgba(216, 169, 75, 0.18);
+}
+
+
+.save-movie-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .add-movie-page {
+    padding: 35px 20px;
+  }
+
+  .add-movie-container h1 {
+    font-size: 42px;
+  }
+
+  .add-movie-subtitle {
+    margin-bottom: 35px;
+  }
+
+  .add-movie-actions {
+    flex-direction: column;
+  }
+
+  .cancel-button,
+  .save-movie-button {
+    width: 100%;
+  }
+}
+/* =========================================
+   POSTER UPLOAD
+========================================= */
+
+.poster-upload {
+  width: 100%;
+}
+
+
+/* Upload box */
+
+.poster-upload-box {
+  width: 100%;
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border: 1px dashed rgba(216, 169, 75, 0.4);
+
+  border-radius: 8px;
+
+  background:
+    rgba(216, 169, 75, 0.035);
+
+  color: #d8a94b;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+
+.poster-upload-box:hover {
+  background:
+    rgba(216, 169, 75, 0.08);
+
+  border-color: #d8a94b;
+}
+
+
+.upload-icon {
+  font-size: 35px;
+
+  margin-bottom: 5px;
+}
+
+
+.poster-upload-box span {
+  font-size: 14px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+}
+
+
+.poster-upload-box small {
+  font-size: 11px;
+
+  color: #777d86;
+}
+
+
+/* =========================================
+   POSTER PREVIEW
+========================================= */
+
+.poster-preview {
+  position: relative;
+
+  width: 180px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.poster-preview img {
+  width: 180px;
+
+  height: 260px;
+
+  object-fit: cover;
+
+  display: block;
+
+  border-radius: 6px;
+
+  border: 1px solid
+    rgba(216, 169, 75, 0.3);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================
+   REMOVE POSTER
+========================================= */
+
+.remove-poster {
+  padding: 8px 15px;
+
+  border-radius: 20px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.15);
+
+  background: transparent;
+
+  color: #aaa;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+
+.remove-poster:hover {
+  color: #d8a94b;
+
+  border-color: #d8a94b;
+}

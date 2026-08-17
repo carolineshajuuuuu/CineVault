@@ -1,0 +1,293 @@
+/* ========================================
+   GLOBAL
+======================================== */
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  background: #050608;
+}
+
+
+/* ========================================
+   FULL SCREEN HOME
+======================================== */
+
+.movie-wall-page {
+  position: relative;
+
+  width: 100vw;
+  height: 100vh;
+
+  min-width: 100vw;
+  min-height: 100vh;
+
+  overflow: hidden;
+
+  background: #050608;
+}
+
+
+/* ========================================
+   MOVIE POSTER WALL
+======================================== */
+
+.movie-wall {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  z-index: 1;
+
+  /* Allows clicks to pass through the poster wall */
+  pointer-events: none;
+}
+
+
+/* ========================================
+   DARK CINEMATIC OVERLAY
+======================================== */
+
+.movie-wall-page::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.35),
+      rgba(0, 0, 0, 0.48)
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.45) 75%,
+      rgba(0, 0, 0, 0.75) 100%
+    );
+}
+
+
+/* ========================================
+   CENTER CONTENT
+======================================== */
+
+.movie-wall-content {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 0 30px;
+
+  /* IMPORTANT:
+     Content itself can receive clicks */
+  pointer-events: auto;
+}
+
+
+/* ========================================
+   CINEVAULT TITLE
+======================================== */
+
+.movie-wall-content h1 {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(60px, 7.5vw, 125px);
+
+  font-weight: 700;
+
+  line-height: 0.95;
+
+  letter-spacing: 10px;
+
+  color: #f5b52f;
+
+  text-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.9),
+    0 0 35px rgba(0, 0, 0, 0.45);
+}
+
+
+/* ========================================
+   SUBTITLE
+======================================== */
+
+.movie-wall-content p {
+  margin: 28px 0 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: clamp(13px, 1.35vw, 21px);
+
+  font-weight: 600;
+
+  line-height: 1.4;
+
+  letter-spacing: 8px;
+
+  text-transform: uppercase;
+
+  color: #ffffff;
+
+  text-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.95);
+}
+
+
+/* ========================================
+   ENTER CINEVAULT BUTTON
+======================================== */
+
+.enter-vault-btn {
+  position: relative;
+
+  z-index: 20;
+
+  margin-top: 42px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 350px;
+  min-height: 72px;
+
+  padding: 15px 42px;
+
+  border: 1px solid #d9aa32;
+
+  border-radius: 3px;
+
+  background: rgba(0, 0, 0, 0.35);
+
+  color: #f5b52f;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  letter-spacing: 5px;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+/* ========================================
+   BUTTON HOVER
+======================================== */
+
+.enter-vault-btn:hover {
+  background: #f5b52f;
+
+  color: #080808;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 25px rgba(245, 181, 47, 0.25);
+}
+
+
+/* ========================================
+   BUTTON ACTIVE
+======================================== */
+
+.enter-vault-btn:active {
+  transform: translateY(0);
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 700px) {
+
+  .movie-wall-content {
+    padding: 0 20px;
+  }
+
+  .movie-wall-content h1 {
+    font-size: 48px;
+
+    letter-spacing: 5px;
+  }
+
+  .movie-wall-content p {
+    margin-top: 20px;
+
+    font-size: 11px;
+
+    letter-spacing: 4px;
+  }
+
+  .enter-vault-btn {
+    width: 280px;
+
+    min-height: 60px;
+
+    margin-top: 32px;
+
+    font-size: 12px;
+
+    letter-spacing: 4px;
+  }
+}

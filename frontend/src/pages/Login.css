@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap');
+
+.login-page {
+  --bg-void: #08090b;
+  --gold: #c9a227;
+  --gold-bright: #f0cf7a;
+  --text-primary: #f2efe6;
+  --text-muted: #9a9ea6;
+  --border-hair: rgba(240, 207, 122, 0.22);
+
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-void);
+  font-family: 'Inter', -apple-system, sans-serif;
+  overflow: hidden;
+  padding: 40px 24px;
+  box-sizing: border-box;
+}
+
+/* ---------- Original gold film-strip backdrop (CSS-only, no external asset) ---------- */
+.vault-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 900px 500px at 70% 85%, rgba(201, 162, 39, 0.16), transparent 60%),
+    radial-gradient(ellipse 600px 600px at 15% 10%, rgba(240, 207, 122, 0.05), transparent 65%),
+    #08090b;
+}
+
+.vault-backdrop .starfield {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, var(--gold-bright), transparent),
+    radial-gradient(1px 1px at 60% 15%, var(--gold-bright), transparent),
+    radial-gradient(1.5px 1.5px at 85% 45%, var(--gold), transparent),
+    radial-gradient(1px 1px at 35% 70%, var(--gold-bright), transparent),
+    radial-gradient(1.5px 1.5px at 75% 80%, var(--gold), transparent),
+    radial-gradient(1px 1px at 10% 85%, var(--gold-bright), transparent),
+    radial-gradient(1px 1px at 50% 50%, var(--gold), transparent),
+    radial-gradient(1.5px 1.5px at 92% 20%, var(--gold-bright), transparent);
+  background-repeat: no-repeat;
+}
+
+.vault-backdrop .reel-band {
+  position: absolute;
+  left: -10%;
+  width: 130%;
+  height: 88px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 10px,
+      rgba(8, 9, 11, 0.9) 10px 24px,
+      transparent 24px 34px
+    ),
+    linear-gradient(180deg, rgba(240, 207, 122, 0.16), rgba(201, 162, 39, 0.05) 45%, transparent 100%);
+  border-top: 1px solid var(--border-hair);
+  border-bottom: 1px solid var(--border-hair);
+}
+
+.vault-backdrop .reel-band.one {
+  top: 8%;
+  transform: rotate(-7deg);
+  opacity: 0.55;
+}
+
+.vault-backdrop .reel-band.two {
+  top: 62%;
+  height: 64px;
+  transform: rotate(5deg);
+  opacity: 0.35;
+}
+
+.vault-backdrop .flare {
+  position: absolute;
+  right: 8%;
+  bottom: -10%;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(240, 207, 122, 0.28), rgba(201, 162, 39, 0.06) 40%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* ---------- Card ---------- */
+.login-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 320px;
+  padding: 28px 28px 24px;
+  background: rgba(20, 20, 22, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-hair);
+  border-radius: 4px;
+  box-shadow: 0 30px 70px -25px rgba(0, 0, 0, 0.75);
+}
+
+.login-wordmark {
+  text-align: center;
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: 19px;
+  letter-spacing: 0.2em;
+  color: var(--gold-bright);
+  margin: 0 0 16px;
+}
+
+/* Tabs */
+.login-tabs {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.login-tabs button {
+  background: none;
+  border: none;
+  padding: 0 0 9px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  position: relative;
+}
+
+.login-tabs button.active {
+  color: var(--text-primary);
+}
+
+.login-tabs button.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  position: relative;
+}
+
+.field label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+.field input {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 3px 24px 7px 2px;
+  font-size: 14px;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.25s ease;
+}
+
+.field input:focus {
+  border-bottom-color: var(--gold-bright);
+}
+
+.field .toggle-visibility {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+.field .toggle-visibility:hover { color: var(--gold-bright); }
+
+/* Checkbox */
+.login-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.login-remember input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 3px;
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.login-remember input[type="checkbox"]::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  transform: scale(0);
+  transition: transform 0.15s ease;
+  box-shadow: inset 1em 1em var(--bg-void);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.login-remember input[type="checkbox"]:checked {
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  border-color: var(--gold-bright);
+}
+
+.login-remember input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.login-remember label {
+  cursor: pointer;
+}
+
+/* Submit */
+.login-submit {
+  margin-top: 2px;
+  padding: 12px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+  color: #1a1508;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.login-submit:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 14px 28px -12px rgba(201, 162, 39, 0.55);
+  transform: translateY(-1px);
+}
+
+.login-submit:active { transform: translateY(0); }
+
+.login-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.login-forgot {
+  text-align: center;
+  margin-top: 2px;
+}
+
+.login-forgot a {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.login-forgot a:hover {
+  color: var(--gold-bright);
+  border-bottom-color: var(--gold-bright);
+}
+
+.login-error {
+  font-size: 12.5px;
+  color: #e08a7d;
+  background: rgba(224, 138, 125, 0.08);
+  border: 1px solid rgba(224, 138, 125, 0.25);
+  padding: 9px 12px;
+  border-radius: 2px;
+}
+
+.login-submit:focus-visible,
+.field input:focus-visible,
+.login-forgot a:focus-visible,
+.login-tabs button:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .login-card { padding: 32px 26px 30px; }
+  .vault-backdrop .reel-band { height: 60px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-submit, .field input, .login-tabs button, .login-forgot a { transition: none; }
+}
