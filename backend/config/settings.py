@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
+import dj_database_url
 
 
 # =========================================================
@@ -68,6 +69,9 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 
     "django.middleware.security.SecurityMiddleware",
+
+    # WhiteNoise - serves static files on Render
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 
     "django.contrib.sessions.middleware.SessionMiddleware",
 
@@ -126,19 +130,20 @@ WSGI_APPLICATION = "config.wsgi.application"
 # DATABASE
 # =========================================================
 #
-# LOCAL DEVELOPMENT:
-# Uses SQLite.
+# LOCAL:
+# Uses SQLite because DATABASE_URL is not set.
 #
 # RENDER:
-# We will configure PostgreSQL later.
+# Uses PostgreSQL through DATABASE_URL.
 #
 # =========================================================
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 
@@ -189,6 +194,11 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# WhiteNoise
+STATICFILES_STORAGE = (
+    "whitenoise.storage.CompressedManifestStaticFilesStorage"
+)
 
 
 # =========================================================
