@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/",
+  baseURL:
+    import.meta.env.VITE_API_URL ||
+    "http://127.0.0.1:8000/api/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -14,24 +16,16 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-
-    const token =
-      localStorage.getItem("access_token");
+    const token = localStorage.getItem("access_token");
 
     if (token) {
-
-      config.headers.Authorization =
-        `Bearer ${token}`;
-
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
-
   },
   (error) => {
-
     return Promise.reject(error);
-
   }
 );
 
@@ -42,143 +36,68 @@ api.interceptors.request.use(
 ========================================= */
 
 api.interceptors.response.use(
-
-  /* Successful response */
-
   (response) => {
-
     return response;
-
   },
 
-
-  /* Error response */
-
   async (error) => {
-
     const originalRequest = error.config;
-
-
-    /*
-      Only try refresh when:
-
-      1. Server returned 401
-      2. This request hasn't already been retried
-      3. A refresh token exists
-    */
 
     if (
       error.response?.status === 401 &&
       !originalRequest._retry
     ) {
-
       const refreshToken =
         localStorage.getItem("refresh_token");
 
-
-      /*
-        If there is no refresh token,
-        send the user to login.
-      */
-
       if (!refreshToken) {
-
-        localStorage.removeItem(
-          "access_token"
-        );
-
-        localStorage.removeItem(
-          "refresh_token"
-        );
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
 
         window.location.href = "/login";
 
         return Promise.reject(error);
-
       }
-
 
       originalRequest._retry = true;
 
-
       try {
-
-        /*
-          Ask Django for a new access token
-        */
-
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/auth/refresh/",
+          `${import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/"}auth/refresh/`,
           {
             refresh: refreshToken,
           }
         );
 
-
-        const newAccessToken =
-          response.data.access;
-
-
-        /*
-          Save new access token
-        */
+        const newAccessToken = response.data.access;
 
         localStorage.setItem(
           "access_token",
           newAccessToken
         );
 
-
-        /*
-          Update the failed request
-        */
-
         originalRequest.headers.Authorization =
           `Bearer ${newAccessToken}`;
-
-
-        /*
-          Try the original request again
-        */
 
         return api(originalRequest);
 
       } catch (refreshError) {
-
         console.error(
           "Refresh token failed:",
           refreshError
         );
 
-
-        /*
-          Refresh token is also invalid.
-          User must login again.
-        */
-
-        localStorage.removeItem(
-          "access_token"
-        );
-
-        localStorage.removeItem(
-          "refresh_token"
-        );
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
 
         window.location.href = "/login";
 
-        return Promise.reject(
-          refreshError
-        );
-
+        return Promise.reject(refreshError);
       }
-
     }
 
-
     return Promise.reject(error);
-
   }
-
 );
 
 
