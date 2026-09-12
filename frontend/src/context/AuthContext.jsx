@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
       : null
   );
 
+  // LOGIN
   const login = async (username, password) => {
     try {
       const response = await api.post("auth/login/", {
@@ -33,6 +34,23 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // REGISTER
+  const register = async (email, username, password) => {
+    try {
+      const response = await api.post("auth/register/", {
+        email,
+        username,
+        password,
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Registration failed:", error);
+      throw error;
+    }
+  };
+
+  // LOGOUT
   const logout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
@@ -45,6 +63,7 @@ export function AuthProvider({ children }) {
       value={{
         user,
         login,
+        register,
         logout,
       }}
     >

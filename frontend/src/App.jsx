@@ -10,6 +10,7 @@ import { useAuth } from "./context/AuthContext";
 
 import "./App.css";
 
+
 function Home() {
   return (
     <main className="movie-wall-page">
@@ -49,9 +50,11 @@ function Home() {
 
 
 function LoginPage() {
-  const { login } = useAuth();
+  const { login, register } = useAuth();
   const navigate = useNavigate();
 
+
+  // SIGN IN
   const handleSignIn = async ({ username, password }) => {
     try {
       await login(username, password);
@@ -59,12 +62,43 @@ function LoginPage() {
       navigate("/watchlist");
     } catch (error) {
       console.error("Login failed:", error);
+
+      throw new Error(
+        error?.response?.data?.detail ||
+        "Invalid username or password."
+      );
     }
   };
+
+
+  // SIGN UP
+  const handleSignUp = async ({ email, username, password }) => {
+    try {
+      await register(email, username, password);
+
+      // Registration successful
+      // Go back to login page
+      window.location.href = "/login";
+
+    } catch (error) {
+      console.error("Registration failed:", error);
+
+      const message =
+        error?.response?.data?.username?.[0] ||
+        error?.response?.data?.email?.[0] ||
+        error?.response?.data?.password?.[0] ||
+        error?.response?.data?.detail ||
+        "Account creation failed. Please try again.";
+
+      throw new Error(message);
+    }
+  };
+
 
   return (
     <Login
       onSignIn={handleSignIn}
+      onSignUp={handleSignUp}
     />
   );
 }
@@ -74,30 +108,37 @@ function App() {
   return (
     <Routes>
 
-  <Route path="/" element={<Home />} />
+      <Route
+        path="/"
+        element={<Home />}
+      />
 
-  <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/login"
+        element={<LoginPage />}
+      />
 
-  <Route
-    path="/watchlist"
-    element={
-      <ProtectedRoute>
-        <Watchlist />
-      </ProtectedRoute>
-    }
-  />
+      <Route
+        path="/watchlist"
+        element={
+          <ProtectedRoute>
+            <Watchlist />
+          </ProtectedRoute>
+        }
+      />
 
-  <Route
-    path="/add-movie"
-    element={
-      <ProtectedRoute>
-        <Add />
-      </ProtectedRoute>
-    }
-  />
+      <Route
+        path="/add-movie"
+        element={
+          <ProtectedRoute>
+            <Add />
+          </ProtectedRoute>
+        }
+      />
 
-</Routes>
+    </Routes>
   );
 }
+
 
 export default App;
